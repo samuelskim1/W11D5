@@ -1,19 +1,28 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { getPokemonItems } from "../store/items";
+import { useEffect, useState } from "react";
+import { getPokemonItems, deletePokemonItem } from "../store/items";
 
-const PokemonItems = ({ pokemon, setEditItemId }) => {
+const PokemonItems = ({ pokemon, setEditItemId, setDeleteItemId, deleteItemId }) => {
+  let itemState;
+
+  // let deleted = false;
+  
   const items = useSelector((state) => {
     if (!pokemon.items) return null;
-    return pokemon.items.map(itemId => state.items[itemId]);
+    itemState = pokemon.items.map(itemId => state.items[itemId]);
+    return itemState;
+    // return pokemon.items.map(itemId => state.items[itemId]);
   });
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("get items",pokemon);
     dispatch(getPokemonItems(pokemon.id));
-  }, [pokemon.id])
+  }, [dispatch, pokemon.id])
+
+  // useEffect(() => {
+  //   dispatch(deletePokemonItem(deleteItemId, pokemon.id));
+  // }, [deleteItemId])
 
   if (!items) {
     return null;
@@ -41,7 +50,13 @@ const PokemonItems = ({ pokemon, setEditItemId }) => {
       )}
       {pokemon.captured && (
         <td className="centered">
-          <button>
+          <button onClick={async () => {
+            await dispatch(deletePokemonItem(item.id, pokemon.id));
+
+            // deleted = true;
+            // setDeleteItemId(item.id);
+            await dispatch(getPokemonItems(pokemon.id));
+          }}>
             Delete
           </button>
         </td>
