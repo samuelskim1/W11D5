@@ -47,7 +47,8 @@ const CreatePokemonForm = ({ hideForm }) => {
       type,
       move1,
       move2,
-      moves: [move1, move2]
+      moves: [move1, move2],
+      captured: true
     };
     
     dispatch(createPokemon(payload));
