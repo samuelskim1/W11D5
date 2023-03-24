@@ -44,10 +44,10 @@ export const updatePokemonItem = (item) =>  async dispatch => {
 
 export const getPokemonItems = (pokemonId) => async dispatch => {
   console.log("get pokemon items",pokemonId);
-  const response = fetch(`/api/pokemon/${pokemonId}/items`);
+  const response = await fetch(`/api/pokemon/${pokemonId}/items`);
 
   if (response.ok) {
-    const itemData = response.json();
+    const itemData = await response.json();
     console.log("itemData", itemData);
     dispatch(load(itemData, pokemonId));
   }
